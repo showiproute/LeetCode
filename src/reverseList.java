@@ -1,3 +1,4 @@
+
 public class reverseList {
 
     public ListNode reverse(ListNode head) {
@@ -13,7 +14,7 @@ public class reverseList {
     }
 
     //recursive
-    // 4->3->2->1 == 4 <-3<-2<-1-newHead;
+    // 4->3->2->1 == 4 <-3<-2<-(1-newHead);
     public ListNode reverse_recursive(ListNode head) {
         if(head.next == null) return head;
         //递归 步骤1: 4->3->2->1 transfer to 4<-3<-2<-1  newHead 是1
@@ -23,42 +24,48 @@ public class reverseList {
         //把原node节点后继节点的后继节点指向node(4)，node的后继节点设置为空，防止环路
         head.next.next = head;
         head.next = null;
-
         //步骤3 返回翻转后的头节点
         return newHead;
     }
 
     //normal 迭代
+    //1 2 3 4 5 6
     public ListNode reverse_normal(ListNode head) {
-        ListNode prev = head.next;
+        ListNode newhead = new ListNode(-1);
+        ListNode prev = head;
         ListNode cur = prev.next;
         prev.next = null;
-
         while(cur!=null) {
             ListNode next = cur.next;
             cur.next = prev;
             prev = cur;
             cur = next;
         }
-
-        head.next = prev;
-        return head;
+        newhead.next = prev;
+        return newhead.next;
     }
 
     public static void main(String[] args) {
         ListNode p1 = new ListNode(1);
         ListNode p2 = new ListNode(2);
         ListNode p3 = new ListNode(3);
+        ListNode p4 = new ListNode(4);
         p1.next =p2;
         p2.next=p3;
+        p3.next = p4;
         reverseList obj = new reverseList();
-        ListNode reverse = obj.reverse(p1);
+        ListNode reverse = obj.reverse_recursive(p1);
+//        ListNode reverse = obj.reverse(p1);
         while(reverse!=null){
             System.out.println(reverse.val);
             reverse = reverse.next;
         }
-
     }
 
+/*
+q1: 面试几面,会问些什么
+q2: 电商业务（工作情况）
+q3: 需要联系你们hr再提交本地hr
+*/
 
 }

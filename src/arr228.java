@@ -9,7 +9,6 @@ public class arr228 {
     //[0,2] --> "0->2"
     //[4,5] --> "4->5"
     //[7,7] --> "7"
-    //
     public List<String> summaryRanges(int[] nums) {
         List<String> rst = new ArrayList<>();
         if(nums == null || nums.length ==0 ) return rst;
@@ -48,6 +47,7 @@ public class arr228 {
 
         return rst;
     }
+
 
     public static void main(String[] args) {
         int[] nums = {1,3};
