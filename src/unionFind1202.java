@@ -1,27 +1,43 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class unionFind1202 {
-
     public class UF {
-
         public int counts;
         public int[] parents;
-        public UF(int n) {
+        public int[] rank;
+        public UF(int n){
+            this.counts = n;
             this.parents = new int[n];
-            for (int i = 0; i < n; i++) {
+            this.rank = new int[n];
+            for(int i = 0;i<n;i++){
                 parents[i] = i;
+                rank[i] = 1;
             }
         }
 
-        public int find(int p) {
-            while (parents[p] != p) {
-                parents[p] = parents[parents[p]];
-                p = parents[p];
+        public void union(int p,int q) {
+            int rootP = find(p);
+            int rootQ = find(q);
+            if(rootP == rootQ) return;
+            if(rank[rootP] == rank[rootQ]) {
+                rank[rootP]++;
+                parents[rootQ] =rootP;
+            }else if(rank[rootP] > rank[rootQ]) {
+                rank[rootP]+=rank[rootQ];
+                parents[rootQ] = rootP;
+            }else{
+                rank[rootQ]+=rank[rootP];
+                parents[rootP] = rootQ;
             }
-            return p;
+            counts--;
+        }
+
+        public int find(int p){
+            if(parents[p] != p) {
+                parents[p] = find(parents[p]);
+            }
+
+            return parents[p];
         }
 
         public boolean isConnected(int p,int q) {
@@ -30,58 +46,41 @@ public class unionFind1202 {
             return rootP == rootQ;
         }
 
-        public void union(int p,int q) {
-            int rootP = find(p);
-            int rootQ = find(q);
-            if(rootP == rootQ) return;
-            if(rootP <= rootQ) {
-                parents[rootQ] = rootP;
-            }else{
-                parents[rootP] = rootQ;
-            }
-            counts--;
-        }
-
-        public int counts(){
-            return this.counts;
-        }
-
     }
 
-    ////    输入：s = "dcab", pairs = [[0,3],[1,2]]
-    ////    输出："bacd"
+    ////    输入：s = "dcab", pairs = [[0,3],[1,2]][0,2]
+    ////    输出："abcd"
     public String smallestStringWithSwaps(String s, List<List<Integer>> pairs) {
-        if(s == null || s.length() == 0 || pairs.size() == 0) return s;
-        UF uf = new UF(26);
-        uf.counts = s.length();
+        if(pairs== null || pairs.size() == 0) return s;
+        UF uf = new UF(s.length());
+
         for(List<Integer> pair : pairs) {
-            int p = s.charAt(pair.get(0)) - 'a';
-            int q = s.charAt(pair.get(1)) - 'a';
-            uf.union(p,q);
+            uf.union(pair.get(0),pair.get(1));
         }
-        //test
-        System.out.println(Arrays.toString(uf.parents));
 
-        //全连通
-        if(uf.counts == 1) {
-            char[] array = s.toCharArray();
-            Arrays.sort(array);
-            StringBuilder sb = new StringBuilder();
-            for(char item : array) {
-                sb.append(item);
+        HashMap<Integer,PriorityQueue<Character>> hashMap = new HashMap<>();
+        for(int i = 0;i<s.length();i++){
+            int root = uf.find(i);
+            if(hashMap.containsKey(root)) {
+                hashMap.get(root).offer(s.charAt(i));
+            }else{
+                PriorityQueue<Character> queue = new PriorityQueue<>();
+                queue.offer(s.charAt(i));
+                hashMap.put(root,queue);
             }
-            return sb.toString();
-        }
-        //没有全连通
-        ArrayList<Character> rst = new ArrayList<>();
-        for(int i =0 ;i<s.length();i++) {
-
         }
 
-        return "";
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0;i<s.length();i++){
+            int root = uf.find(i);
+            sb.append(hashMap.get(root).poll());
+        }
+
+        return sb.toString();
     }
 
-
+    //输入：s = "dcab", pairs = [[0,3],[1,2],[0,2]]
+    //输出："abcd"
     public static void main(String[] args) {
         unionFind1202 obj = new unionFind1202();
         List<List<Integer>> rst = new ArrayList<>();
