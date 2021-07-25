@@ -1,21 +1,25 @@
-import java.util.HashSet;
+import java.util.Arrays;
+import java.util.Comparator;
 
 public class hashSet1893 {
 
     public boolean isCovered(int[][] ranges, int left, int right) {
-        HashSet<Integer> vals = new HashSet<>();
+        Arrays.sort(ranges, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] o1, int[] o2) {
+                return o1[0] - o2[0];
+            }
+        });
+
         for(int i = 0;i<ranges.length;i++){
-            for(int j = 0;j<ranges[i].length;j++){
-                if(ranges[i][0] == ranges[i][1]) break;
-                vals.add(ranges[i][j]);
+            int l = ranges[i][0];
+            int r = ranges[i][1];
+            if(l <= left && left <= r) {
+                left = r+1;
             }
         }
 
-        for(int i = left;i<=right;i++){
-            if(vals.contains(i)) return true;
-        }
-
-        return false;
+        return left > right;
     }
 
     public static void main(String[] args) {
