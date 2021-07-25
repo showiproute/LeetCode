@@ -1,7 +1,7 @@
 import java.util.Arrays;
 import java.util.Comparator;
 
-public class hashSet1893 {
+public class sort1893 {
 
     public boolean isCovered(int[][] ranges, int left, int right) {
         Arrays.sort(ranges, new Comparator<int[]>() {
@@ -23,7 +23,7 @@ public class hashSet1893 {
     }
 
     public static void main(String[] args) {
-        hashSet1893 obj = new hashSet1893();
+        sort1893 obj = new sort1893();
         int[][] ranges = {{1,10},{10,20}};
         boolean covered = obj.isCovered(ranges, 21, 21);
         System.out.println(covered);

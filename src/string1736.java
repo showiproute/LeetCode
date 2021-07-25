@@ -1,5 +1,3 @@
-import java.util.Arrays;
-
 public class string1736 {
 
     public String maximumTime(String time) {
