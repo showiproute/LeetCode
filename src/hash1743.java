@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class dfs1743 {
+public class hash1743 {
 
     //输入：adjacentPairs = [[4,-2],[1,4],[-3,1]]
     //输出：[-2,4,1,-3]
@@ -60,7 +60,7 @@ public class dfs1743 {
                 {1,4},
                 {-3,1}
         };
-        dfs1743 obj = new dfs1743();
+        hash1743 obj = new hash1743();
         int[] ints = obj.restoreArray(adj);
         System.out.println(Arrays.toString(ints));
     }
